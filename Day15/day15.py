@@ -10,12 +10,12 @@ def adjacent(coord, m):
     """
     R = len(m)
     C = len(m[0])
-    DR = [0, 1]
-    DC = [1, 0]
+    DR = [0, 1, 0, -1]
+    DC = [1, 0, -1, 0]
     adj_coords = []
 
     x, y = coord[0], coord[1]
-    for i in range(2):
+    for i in range(4):
         dx = x + DR[i]
         dy = y + DC[i]
         if 0 <= dx < R and 0 <= dy < C:
