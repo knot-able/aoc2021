@@ -51,7 +51,6 @@ def score(num, board):
         for n in row:
             if n != -1:
                 unmarked += n
-    print(unmarked)
     return unmarked * num
 
 def findLoser(numbers, boards):
@@ -61,48 +60,35 @@ def findLoser(numbers, boards):
     while len(boards) > 0:
         current_number = numbers.pop(0)
         called.append(current_number)
-        for i, board in enumerate(boards):
+        boards_to_remove = []
+        for _, board in enumerate(boards):
             if bingoCheck(current_number, board):
-                last_board = boards.pop(i)
-    # ISSUE IS THAT ONCE POPPED, DOESN'T CHECK NEXT BOARDS FOR CURRENT NUMBER
+                boards_to_remove.append(board)
+        for board in boards_to_remove:
+            boards.remove(board)
+            last_board = board
+
+    if len(board) == 1:
+        last_board = boards[0]
 
     for number in called:
         bingoCheck(number, last_board)
 
     return current_number, last_board
 
-    # # check if losing board already won - this may be redundant
-    # for row in losing_board:
-    #     for i, _ in enumerate(row):
-    #         if sum(row) == -5:
-    #             return current_number, losing_board
-    #         elif sum([r[i] for r in losing_board]) == -5:
-    #             return current_number, losing_board
-
-    # print(current_number, numbers, losing_board)
-
-    # if bingoCheck(current_number, losing_board):
-    #     return current_number, losing_board
-
-    # while numbers:
-    #     current_number = numbers.pop(0)
-    #     if bingoCheck(current_number, losing_board):
-    #         return current_number, losing_board
 
 if __name__ == "__main__":
 
-    INPUT = "input4.txt"
+    INPUT = "Day04/input4.txt"
 
     # Part 1
-    # bingo_numbers, bingo_boards = parseFile(INPUT)
-    # last_called, winning_board = findWinner(bingo_numbers, bingo_boards)
-    # winning_score = score(last_called, winning_board)
-    # print(f'Answer part 1: {winning_score}')
+    bingo_numbers, bingo_boards = parseFile(INPUT)
+    last_called, winning_board = findWinner(bingo_numbers, bingo_boards)
+    winning_score = score(last_called, winning_board)
+    print(f'Answer part 1: {winning_score}')
 
     # Part 2
-    bingo_numbers, bingo_boards = parseFile(INPUT)
     last_called, losing_board = findLoser(bingo_numbers, bingo_boards)
-
     losing_score = score(last_called, losing_board)
     print(f'Answer part 2: {losing_score}')
 
