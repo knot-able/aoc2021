@@ -29,7 +29,6 @@ def n_steps(initial_state, rules, n):
     for pair in zip(initial_state[:-1],initial_state[1:]):
         start_pairs[pair[0] + pair[1]] += 1
     
-
     while n > 0:
         end_pairs = collections.defaultdict(int)
         for pair, value in start_pairs.items():
@@ -59,9 +58,6 @@ def get_score(d, template):
 
     return elements[most_common_element] - elements[least_common_element]
 
-# Once steps are complete, take final dictionary, and convert into single element dictionary
-# Get score by using counter
-
 
 if __name__ == "__main__":
 
@@ -76,3 +72,5 @@ if __name__ == "__main__":
     step40 = n_steps(polymer_template, pair_insertion_rules, 40)
     score40 = get_score(step40, polymer_template)
     print(f'Ans 2: {score40}')
+
+    # To improve, keep track of characters at the same time as pairs, so second function is not needed
