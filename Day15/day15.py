@@ -2,8 +2,10 @@ from math import inf
 from copy import deepcopy
 from bisect import insort_left
 
+
 def adjacent(coord, m):
-    """Find adjacent coordinates (not diagonal)
+    """Helper function.
+    Find adjacent coordinates (not diagonal)
     within a map, returns a list of valid coordinates.
     """
     R = len(m)
@@ -20,6 +22,7 @@ def adjacent(coord, m):
             adj_coords.append((dx, dy))
     
     return adj_coords
+
 
 def lowest_risk_path(m):
     """Performs dijkstra's algorithm on a map, m
@@ -44,7 +47,7 @@ def lowest_risk_path(m):
             S.add(current_position)
             current_weight = dist[current_position[0]][current_position[1]]
             for a in adjacent(current_position, m):
-                if current_weight + chiton_map[a[0]][a[1]] < dist[a[0]][a[1]]:
+                if current_weight + m[a[0]][a[1]] < dist[a[0]][a[1]]:
                     dist[a[0]][a[1]] = current_weight + m[a[0]][a[1]]
                     # insert a in correct place in list
                     if len(Q) > 1:
@@ -62,6 +65,36 @@ def lowest_risk_path(m):
     lowest_risk = dist[-1][-1]
     return lowest_risk
 
+
+def full_map(m):
+    """Takes in a chiton map and returns five times larger version
+    where each time tile repeats right or down, risk level increases
+    by 1."""
+    # repeat horizontally then repeat vertically
+
+    horizontal = []
+    for row in m:
+        new_row = []
+        for i in range(0,5):
+            for item in row:
+                v = item + i
+                v = v - 9 if v > 9 else v
+                new_row.append(v)
+        horizontal.append(new_row)
+    
+    vertical = []
+    for i in range(0,5):
+        for row in horizontal:
+            new_row = []
+            for item in row:
+                v = item + i
+                v = v - 9 if v > 9 else v
+                new_row.append(v)
+            vertical.append(new_row)
+    
+    return vertical
+
+
 if __name__ == "__main__":
 
     INPUT = 'Day15/input15.txt'
@@ -73,17 +106,22 @@ if __name__ == "__main__":
 
     low_risk = lowest_risk_path(chiton_map)
     print(f'Ans 1 : {low_risk}')
+
+    fullmap = full_map(chiton_map)
+    # for l in fullmap:
+    #     print(''.join([str(s) for s in l]) + '\n')
+    # print(len(fullmap))
+
+    low_risk = lowest_risk_path(fullmap)
+    print(f'Ans 2 : {low_risk}')
     
 
 
+
     
 
 
 
-
-
-
-    # Want to use Dijkstra's algorithm
 
 
 
