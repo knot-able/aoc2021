@@ -36,7 +36,7 @@ def simulate_fish(days, lanternfish):
     for fish in lanternfish:
         initial_state[fish] += 1
 
-    for day in range(days):
+    for _ in range(days):
         end_state = blank.copy()
         for k, v in initial_state.items():
             if k != 0:
