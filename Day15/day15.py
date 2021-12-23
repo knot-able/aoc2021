@@ -1,6 +1,6 @@
 from math import inf
 from copy import deepcopy
-
+from bisect import insort_left
 
 def adjacent(coord, m):
     """Find adjacent coordinates (not diagonal)
@@ -20,6 +20,9 @@ def adjacent(coord, m):
             adj_coords.append((dx, dy))
     
     return adj_coords
+
+def dijkstra():
+    pass
 
 
 if __name__ == "__main__":
@@ -45,13 +48,9 @@ if __name__ == "__main__":
 # TODO - DON'T NEED TO RESORT THE WHOLE THING, JUST NEED TO REMOVE UPDATED ITEMS FROM LIST AND INSERT IN CORRECT PLACE
 # Go through list (already sorted) until you find the first item bigger than your item, then insert
     update = False
-
-
-
+    
     # start dijkstra's algorithm
     while Q:
-        if update:
-            Q = sorted(Q, key = lambda k: dist[k[0]][k[1]])
         current_position = Q.pop(0)
         if current_position not in S:
             S.add(current_position)
@@ -59,7 +58,20 @@ if __name__ == "__main__":
             for a in adjacent(current_position, chiton_map):
                 if current_weight + chiton_map[a[0]][a[1]] < dist[a[0]][a[1]]:
                     dist[a[0]][a[1]] = current_weight + chiton_map[a[0]][a[1]]
-                    update = True
+                    # insert a in correct place in list
+                    if len(Q) > 1:
+                        Q.remove(a)
+                        ind = 0
+                        while a:
+                            c = Q[ind]
+                            if dist[c[0]][c[1]] > dist[a[0]][a[1]]:
+                                Q.insert(ind,a)
+                                a = False
+                            ind += 1
+                            if ind == len(Q):
+                                Q.append(a)
+                                a = False
+
 
     lowest_risk = dist[-1][-1]
     print(f'Ans 1 : {lowest_risk}')
