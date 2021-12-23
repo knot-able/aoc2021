@@ -6,8 +6,6 @@ def parse_input(inp):
     with open(inp) as f:
         dot_positions, instructions = f.read().split('\n\n')
 
-    # TODO - PARSE MORE EFFICIENTLY
-
     dot_positions = dot_positions.split('\n')
     max_width, max_height = 0, 0
     dot_coordinates = []
