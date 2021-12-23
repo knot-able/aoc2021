@@ -72,3 +72,7 @@ if __name__ == "__main__":
     step10 = n_steps(polymer_template, pair_insertion_rules, 10)
     score10 = get_score(step10, polymer_template)
     print(f'Ans 1: {score10}')
+
+    step40 = n_steps(polymer_template, pair_insertion_rules, 40)
+    score40 = get_score(step40, polymer_template)
+    print(f'Ans 2: {score40}')
