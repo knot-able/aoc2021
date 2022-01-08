@@ -24,16 +24,13 @@ def reaches_target(initial_velocity, target_range):
     x, y = 0, 0
     x_velocity, y_velocity = initial_velocity
 
-    while x <= x2:
+    while x <= x2 and y >= min(y1, y2):
         x, y = x + x_velocity, y + y_velocity
         x_velocity = x_velocity - 1 if x_velocity > 0 else x_velocity + 1 if x_velocity < 0 else 0
         y_velocity = y_velocity - 1
         if y in range(y1, y2 + 1) and x in range(x1, x2 + 1):
-            return 0
-        elif y < min(y1, y2):
-            return 1
-    
-    return -1
+            return True
+    return False
 
 
 
@@ -41,20 +38,29 @@ if __name__ == "__main__":
 
     INPUT = "Day17/input17.txt"
     target = parse_input(INPUT)
+    x1, x2, y1, y2 = target
 
-    potential_x = list(accumulate(range(1,31)))
-    assert potential_x[-1] > target[1]
-    max_x_in_range = [idx + 1 for idx, val in enumerate(potential_x) if val in range(target[0], target[1] + 1)]    
+    target_set = set()
+    for x in range(0, max(x1,x2) + 1):
+        for y in range(y1 - 1, -y1 + 1):
+            if reaches_target((x,y), target):
+                target_set.add((x,y))
+    
+    print(f'Ans 2 : {len(target_set)}')
 
-    max_y = -1
-    for x in range(1,target[0]):
-        y = 0
-        hit = reaches_target((x,y), target)
-        while hit < 1:
-            if hit == 0 and y > max_y:
-                max_y = y
-            y += 1
-            hit = reaches_target((x,y), target)
 
-    max_height = (max_y * (max_y + 1))/2
-    print(max_height)
+    # with open("Day17/answer.txt") as f:
+    #     ans_list = []
+    #     ans_set = set()
+    #     text = f.read().split()
+    #     for c in text:
+    #         ans_list.append(c.split(','))
+    #     for c in ans_list:
+    #         ans_set.add((int(c[0]), int(c[1])))
+    #     print(ans_set)
+    
+    # print(reaches_target((7,-1), target))
+    # print(reaches_target((6,0), target))
+
+    
+    # print(ans_set - target_set)
